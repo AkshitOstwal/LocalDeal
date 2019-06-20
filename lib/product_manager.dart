@@ -16,7 +16,8 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  List<String> _products = [];
+  List<String> _products = []; //in .add add a new value and not assigning it so we can mark it final also
+
   @override
   void initState() {
     print('[_productmanagerstate] initstate()');
@@ -29,7 +30,7 @@ class _ProductManagerState extends State<ProductManager> {
     super.didUpdateWidget(oldWidget);
   }
 
-  void _addProducts(String product){
+  void _addProducts(String product){ //creatring this so we can access the setState in product_control
     setState(() {
       _products.add(product);
     });
@@ -42,7 +43,7 @@ class _ProductManagerState extends State<ProductManager> {
       children: [
         Container(
           margin: EdgeInsets.all(10.0),
-          child: ProductControl(_addProducts),
+          child: ProductControl(_addProducts), // we are passing the function reference only here
         ),
         Products(_products)
       ],
