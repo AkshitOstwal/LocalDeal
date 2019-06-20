@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './products.dart';
-import './product_control.dart'
+import './product_control.dart';
 class ProductManager extends StatefulWidget {
   final String startingProduct;
   ProductManager({this.startingProduct = 'Sweets Tester'}){
