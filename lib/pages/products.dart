@@ -10,8 +10,13 @@ class ProductsPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             AppBar(
+              automaticallyImplyLeading: false,
               title: Text("Choose"),
             ),
+            ListTile(
+              title: Text("Manage Products"),
+              onTap: () {},
+            )
           ],
         ),
       ),
