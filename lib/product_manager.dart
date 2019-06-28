@@ -4,7 +4,7 @@ import './products.dart';
 import './product_control.dart';
 
 class ProductManager extends StatefulWidget {
-  final String startingProduct;
+  final Map<String,String> startingProduct;
 
   ProductManager({this.startingProduct}) {
     print('[ProductManager widget] Constructor');
@@ -18,7 +18,7 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  List<String> _products =
+  List<Map<String,String>> _products =
       []; //in .add add a new value and not assigning it so we can mark it final also
 
   @override
@@ -36,7 +36,7 @@ class _ProductManagerState extends State<ProductManager> {
     super.didUpdateWidget(oldWidget);
   }
 
-  void _addProducts(String product) {
+  void _addProducts(Map<String,String> product) {
     //creatring this so we can access the setState in product_control
     setState(() {
       _products.add(product);

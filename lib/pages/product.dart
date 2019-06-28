@@ -1,14 +1,26 @@
 import "package:flutter/material.dart";
 
 class ProductPage extends StatelessWidget {
- @override
+  final String title , imageUrl;
+  ProductPage(this.title,this.imageUrl);
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Product detail'),
-        ),
-        body: Center(child: Text('on the product page'),),
-      );
-  } 
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Column(
+        children: <Widget>[
+          Image.asset(imageUrl),
+          Container(padding: EdgeInsets.all(5),child:Text('on the product page')),
+          RaisedButton(
+            color: Theme.of(context).accentColor,
+            child: Text('Back'),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
+    );
+  }
 }
