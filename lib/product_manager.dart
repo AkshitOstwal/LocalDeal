@@ -43,6 +43,9 @@ class _ProductManagerState extends State<ProductManager> {
     });
   }
 
+  void _deleteProduct(int index){
+    _products.removeAt(index);
+  }
   @override
   Widget build(BuildContext context) {
     print('[_productmanagerstate] Build()');
@@ -54,7 +57,7 @@ class _ProductManagerState extends State<ProductManager> {
               _addProducts), // we are passing the function reference only here
         ),
         // use Container(height:300 , child: Products(_products)), for fixed amaount of scrollable panel
-        Expanded(child: Products(_products)),
+        Expanded(child: Products(_products, deleteProduct: _deleteProduct)),
       ],
     );
   }
