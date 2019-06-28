@@ -1,4 +1,4 @@
-import './pages/home.dart';
+import './pages/auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         accentColor: Colors.deepPurple,
       ),
-      home:HomePage()
+      home:AuthPage()
     );
   }
 }
