@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ProductAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return DefaultTabController(
         length: 2,
         child: Scaffold(

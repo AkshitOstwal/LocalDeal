@@ -22,6 +22,5 @@ class AuthPage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
