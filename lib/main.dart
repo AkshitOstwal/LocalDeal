@@ -1,4 +1,6 @@
+import 'package:firstapp/pages/products.dart';
 import './pages/auth.dart';
+import './pages/products_admin.dart';
 
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,7 @@ void main() {
   // debugPaintBaselinesEnabled = true;
   // debugPaintPointersEnabled = true;
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -22,7 +24,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         accentColor: Colors.deepPurple,
       ),
-      home:AuthPage()
+      // home: AuthPage(),
+      routes: {
+        '/': (BuildContext context) => ProductsPage(),
+        '/admin': (BuildContext context) => ProductAdminPage(), 
+      },
     );
   }
 }
