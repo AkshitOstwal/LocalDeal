@@ -40,7 +40,7 @@ class ProductAdminPage extends StatelessWidget {
                 ),
                 Tab(
                   icon: Icon(Icons.list),
-                  text: "MY Product",
+                  text: "My Product",
                 ),
               ],
             ),
