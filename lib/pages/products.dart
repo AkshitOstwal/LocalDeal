@@ -13,6 +13,7 @@ class ProductsPage extends StatelessWidget {
             AppBar(
               automaticallyImplyLeading: false,
               title: Text("Choose"),
+              
             ),
             ListTile(
               title: Text("Manage Products"),
