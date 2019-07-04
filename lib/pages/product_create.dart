@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class ProductCreatePage extends StatefulWidget {
   final Function addProduct;
-
   ProductCreatePage(this.addProduct);
 
   @override

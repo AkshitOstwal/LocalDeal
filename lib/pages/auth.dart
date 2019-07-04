@@ -10,6 +10,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   String _emailValue;
   String _passwordValue;
+  bool _acceptTerms = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,13 @@ class _AuthPageState extends State<AuthPage> {
             SizedBox(
               height: 10,
             ),
+            SwitchListTile(
+              value: _acceptTerms,
+              onChanged: (bool value) {setState(() {
+               _acceptTerms = value; 
+              });},
+              title: Text('Accept Terms and Condition'),
+            ),
             RaisedButton(
               color: Theme.of(context).primaryColor,
               textColor: Colors.white,
@@ -49,7 +57,7 @@ class _AuthPageState extends State<AuthPage> {
               onPressed: () {
                 print(_emailValue);
                 print(_passwordValue);
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/products');
               },
             ),
           ],
