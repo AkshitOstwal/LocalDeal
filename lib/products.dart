@@ -1,4 +1,3 @@
-import './pages/product.dart';
 import 'package:flutter/material.dart';
 
 class Products extends StatelessWidget {
