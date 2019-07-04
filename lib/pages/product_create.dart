@@ -53,7 +53,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               });
             },
             keyboardType: TextInputType.number,
-          )
+          ),
+          RaisedButton(child: Text('Save'),onPressed:() {},),
         ],
       ),
     );
