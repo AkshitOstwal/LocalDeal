@@ -60,7 +60,7 @@ flutter:
     - family: Oswald
       fonts:
         - asset: assets/Oswald-Bold.ttf
-        
+          weight: 700
   # fonts:
   #   - family: Schyler
   #     fonts:
