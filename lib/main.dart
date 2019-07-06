@@ -67,6 +67,7 @@ class _MyAppState extends State<MyApp> {
             builder: (BuildContext context) => ProductPage(
                   _products[index]['title'],
                   _products[index]['image'],
+                  _products[index]['price'],_products[index]['description'],
                 ),
           );
         }

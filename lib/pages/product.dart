@@ -2,8 +2,9 @@ import 'dart:async';
 import "package:flutter/material.dart";
 
 class ProductPage extends StatelessWidget {
-  final String title, imageUrl;
-  ProductPage(this.title, this.imageUrl);
+  final String title, imageUrl, description;
+  final double price;
+  ProductPage(this.title, this.imageUrl, this.price, this.description);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -46,18 +47,44 @@ class ProductPage extends StatelessWidget {
           title: Text(title),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(imageUrl),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: Text(title),
+              child: Text(
+                title,
+                style: TextStyle(
+                    fontSize: 26.0,
+                    fontFamily: 'Oswald',
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Jaiput,Rajasthan',
+                  style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Text(
+                    '|',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Text(
+                  '\$' + price.toString(),
+                  style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
+                )
+              ],
             ),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                color: Theme.of(context).accentColor,
-                child: Text('Delete'),
-                onPressed: () => _showWarningDialog(context),
+              child: Text(
+                description,
+                textAlign: TextAlign.center,
               ),
             )
           ],
