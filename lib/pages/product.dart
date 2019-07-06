@@ -75,7 +75,7 @@ class ProductPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '\$' + price.toString(),
+                  '₹ ' + price.toString(),
                   style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
                 )
               ],
