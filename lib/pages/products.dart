@@ -18,13 +18,14 @@ class ProductsPage extends StatelessWidget {
               title: Text("Choose"),
 
             ),
-            ListTile(
+            ListTile(leading: Icon(Icons.edit),
               title: Text("Manage Products"),
               onTap: () {
                 Navigator.pushReplacementNamed(
                     context,
                     '/admin');
               },
+
             )
           ],
         ),

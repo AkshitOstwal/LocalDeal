@@ -12,6 +12,7 @@ class Products extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Image.asset(products[index]['image']),
+          //title
           Container(
             padding: EdgeInsets.only(top: 10.0),
             child: Row(
@@ -27,10 +28,11 @@ class Products extends StatelessWidget {
                 SizedBox(
                   width: 8.0,
                 ),
+                //price
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 6.0,
-                    vertical: 2,
+                    vertical: 2.0,
                   ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).accentColor,
@@ -44,6 +46,19 @@ class Products extends StatelessWidget {
               ],
             ),
           ),
+          //location
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey,
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Text('Jaipur ,Rajasthan'),
+          ),
+          //details button
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
