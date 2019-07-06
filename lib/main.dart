@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
       // home: AuthPage(),
       routes: {
         '/': (BuildContext context) => AuthPage(),
-        '/products':(BuildContext context) => ProductsPage(_products),
+        '/products': (BuildContext context) => ProductsPage(_products),
         '/admin': (BuildContext context) =>
             ProductAdminPage(_addProduct, _deleteProduct),
       },
@@ -67,7 +67,8 @@ class _MyAppState extends State<MyApp> {
             builder: (BuildContext context) => ProductPage(
                   _products[index]['title'],
                   _products[index]['image'],
-                  _products[index]['price'],_products[index]['description'],
+                  _products[index]['price'],
+                  _products[index]['description'],
                 ),
           );
         }
