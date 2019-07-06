@@ -15,6 +15,7 @@ class Products extends StatelessWidget {
         itemBuilder: (BuildContext context , int index)=> ProductCard( products[index],index),
         itemCount: products.length,
       );
+      print(products);
     } else {
       productCards = Center(
         child: Text('No item found , try adding one!!'),
