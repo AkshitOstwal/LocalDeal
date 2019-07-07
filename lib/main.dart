@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
         '/': (BuildContext context) => AuthPage(),
         '/products': (BuildContext context) => ProductsPage(_products),
         '/admin': (BuildContext context) =>
-            ProductAdminPage(_addProduct, _deleteProduct),
+            ProductAdminPage(_addProduct, _deleteProduct,_products),
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements =
