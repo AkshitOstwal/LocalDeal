@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         primarySwatch: Colors.deepOrange,
         accentColor: Colors.deepPurple,
-      ),
+        buttonColor: Colors.deepPurple),
       // home: AuthPage(),
       routes: {
         '/': (BuildContext context) => AuthPage(),
@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements =
-            settings.name.split('/'); // '/product/1'
+            settings.name.split('/'); //ex '/product/1'
 
         if (pathElements[0] != '') return null;
 
