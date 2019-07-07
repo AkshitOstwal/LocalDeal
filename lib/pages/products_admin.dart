@@ -31,30 +31,37 @@ class ProductAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: DefaultTabController(
         length: 2,
         child: Scaffold(
-            drawer: _buildSideDrawer(context),
-            appBar: AppBar(
-              title: Text("Manage Products"),
-              bottom: TabBar(
-                tabs: <Widget>[
-                  Tab(
-                    icon: Icon(Icons.create),
-                    text: "Create Product",
-                  ),
-                  Tab(
-                    icon: Icon(Icons.list),
-                    text: "My Product",
-                  ),
-                ],
-              ),
-            ),
-            body: TabBarView(
-              children: <Widget>[
-                ProductCreatePage(addProduct),
-                ProductListPage(),
+          drawer: _buildSideDrawer(context),
+          appBar: AppBar(
+            title: Text("Manage Products"),
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(
+                  icon: Icon(Icons.create),
+                  text: "Create Product",
+                ),
+                Tab(
+                  icon: Icon(Icons.list),
+                  text: "My Product",
+                ),
               ],
-            )));
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              ProductCreatePage(addProduct),
+              ProductListPage(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
