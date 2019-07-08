@@ -1,3 +1,5 @@
+import 'package:firstapp/models/product.dart';
+
 import './product_edit.dart';
 import './product_list.dart';
 
@@ -7,7 +9,7 @@ class ProductAdminPage extends StatelessWidget {
   final Function addProduct;
   final Function deleteProduct;
   final Function updateProduct;
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
 
   ProductAdminPage(this.addProduct, this.updateProduct, this.deleteProduct, this.products);
 
