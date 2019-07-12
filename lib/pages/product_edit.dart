@@ -1,5 +1,8 @@
 import 'package:firstapp/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scoped-models/products.dart';
 
 class ProductEditPage extends StatefulWidget {
   final Function addProduct;
@@ -83,11 +86,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(Function addProduct , Function updateProduct) {
     if (!_formKey.currentState.validate()) return null;
     _formKey.currentState.save();
     if (widget.product == null) {
-      widget.addProduct(
+      addProduct(
         Product(
           title: _formData['title'],
           description: _formData['description'],
@@ -96,7 +99,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         ),
       );
     } else {
-      widget.updateProduct(
+      updateProduct(
         widget.productIndex,
         Product(
           title: _formData['title'],
@@ -107,6 +110,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
       );
     }
     Navigator.pushReplacementNamed(context, '/products');
+  }
+
+  Widget _buildSubmitButton() {
+    return ScopedModelDescendant<ProductModel>(
+      builder: (BuildContext context, Widget child, ProductModel model) {
+        return RaisedButton(
+          child: Text('Save'),
+          color: Theme.of(context).accentColor,
+          textColor: Colors.white,
+          onPressed: () => _submitForm(model.addProduct,model.updateProduct),
+        );
+      },
+    );
   }
 
   Widget _buildPageContent(BuildContext context) {
@@ -130,12 +146,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
               SizedBox(
                 height: 15,
               ),
-              RaisedButton(
-                child: Text('Save'),
-                color: Theme.of(context).accentColor,
-                textColor: Colors.white,
-                onPressed: _submitForm,
-              ),
+              _buildSubmitButton(),
               // GestureDetector(
               //   child: Container(
               //     child: Text('My Button'),
