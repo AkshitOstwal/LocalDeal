@@ -1,6 +1,5 @@
 import 'package:firstapp/scoped-models/products.dart';
 
-import './models/product.dart';
 import './pages/auth.dart';
 import './pages/products.dart';
 import './pages/products_admin.dart';
@@ -54,8 +53,7 @@ class _MyAppState extends State<MyApp> {
             final int index = int.parse(pathElements[2]);
 
             return MaterialPageRoute<bool>(
-              builder: (BuildContext context) =>
-                  ProductPage(index),
+              builder: (BuildContext context) => ProductPage(index),
             );
           }
           return null;
