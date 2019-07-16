@@ -1,4 +1,6 @@
+import 'package:firstapp/scoped-models/main.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -76,12 +78,12 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(Function login) {
     if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
       return;
     }
     _formKey.currentState.save();
-    print(_formData);
+    login(_formData['email'],_formData['password']);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -89,46 +91,52 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500 : deviceWidth * 0.95;
-    return GestureDetector(onTap: (){
-      FocusScope.of(context).requestFocus(FocusNode());
-    },
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
         child: Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: _buildBackgroundImage(),
-        ),
-        padding: EdgeInsets.all(10),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Container(
-                width: targetWidth,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      _buildEmailTextField(),
-                      SizedBox(
-                        height: 11.0,
-                      ),
-                      _buildPasswordTextField(),
-                      _buildAcceptSwitch(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      RaisedButton(
-                        textColor: Colors.white,
-                        child: Text("LOGIN"),
-                        onPressed: _submitForm,
-                      ),
-                    ],
-                  ),
-                )),
+          appBar: AppBar(
+            title: Text('Login'),
           ),
-        ),
-      ),
-    ));
+          body: Container(
+            decoration: BoxDecoration(
+              image: _buildBackgroundImage(),
+            ),
+            padding: EdgeInsets.all(10),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Container(
+                    width: targetWidth,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          _buildEmailTextField(),
+                          SizedBox(
+                            height: 11.0,
+                          ),
+                          _buildPasswordTextField(),
+                          _buildAcceptSwitch(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          ScopedModelDescendant<MainModel>(
+                            builder: (BuildContext conntext, Widget child,
+                                MainModel model) {
+                              return RaisedButton(
+                                textColor: Colors.white,
+                                child: Text("LOGIN"),
+                                onPressed: () => _submitForm(model.login),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+            ),
+          ),
+        ));
   }
 }

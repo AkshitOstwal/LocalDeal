@@ -1,4 +1,4 @@
-import 'package:firstapp/scoped-models/products.dart';
+import 'package:firstapp/scoped-models/main.dart';
 
 import './pages/auth.dart';
 import './pages/products.dart';
@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     print("hey inside MyApp => build");
-    return ScopedModel<ProductsModel>(
-      model: ProductsModel(),
+    return ScopedModel<MainModel>(
+      model: MainModel(),
       child: MaterialApp(
         // debugShowMaterialGrid: true,
         theme: ThemeData(
