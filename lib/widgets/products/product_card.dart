@@ -41,8 +41,8 @@ class ProductCard extends StatelessWidget {
           onPressed: () => Navigator.pushNamed<bool>(
               context, '/product/' + productIndex.toString()),
         ),
-        ScopedModelDescendant<ProductModel>(
-            builder: (BuildContext context, Widget child, ProductModel model) {
+        ScopedModelDescendant<ProductsModel>(
+            builder: (BuildContext context, Widget child, ProductsModel model) {
           return IconButton(
             icon: Icon(
               model.products[productIndex].isFavorite

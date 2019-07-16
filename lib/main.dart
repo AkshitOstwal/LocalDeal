@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     print("hey inside MyApp => build");
-    return ScopedModel<ProductModel>(
-      model: ProductModel(),
+    return ScopedModel<ProductsModel>(
+      model: ProductsModel(),
       child: MaterialApp(
         // debugShowMaterialGrid: true,
         theme: ThemeData(

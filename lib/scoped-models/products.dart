@@ -1,7 +1,7 @@
 import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
 
-class ProductModel extends Model {
+class ProductsModel extends Model {
   List<Product> _products = [];
   int _selectedProductIndex;
 
