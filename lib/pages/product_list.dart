@@ -8,14 +8,16 @@ class ProductListPage extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
-        model.selectProudct(index);
+        model.selectProduct(index);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
               return ProductEditPage();
             },
           ),
-        );
+        ).then((_) {
+          model.selectProduct(null);
+        });
       },
     );
   }
@@ -49,11 +51,11 @@ class ProductListPage extends StatelessWidget {
       return ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
-            key: Key(model.products[index].title),
+            key: Key(model.allProducts[index].title),
             background: _buildDeleteBackground(),
             onDismissed: (DismissDirection direction) {
               if (direction == DismissDirection.endToStart) {
-                model.selectProudct(index);
+                model.selectProduct(index);
                 model.deleteProduct();
               }
             },
@@ -62,13 +64,13 @@ class ProductListPage extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: AssetImage(model.products[index].image),
+                    backgroundImage: AssetImage(model.allProducts[index].image),
                     radius: 25,
                   ),
                   title: Text(
-                    model.products[index].title,
+                    model.allProducts[index].title,
                   ),
-                  subtitle: Text('₹ ${model.products[index].price}'),
+                  subtitle: Text('₹ ${model.allProducts[index].price}'),
                   trailing: _bulidEditButton(context, index, model),
                 ),
                 Divider(),
@@ -76,7 +78,7 @@ class ProductListPage extends StatelessWidget {
             ),
           );
         },
-        itemCount: model.products.length,
+        itemCount: model.allProducts.length,
       );
     });
   }

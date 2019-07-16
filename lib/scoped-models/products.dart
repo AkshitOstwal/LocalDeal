@@ -1,56 +1,59 @@
 import 'package:scoped_model/scoped_model.dart';
 import '../models/product.dart';
+import './connected_products.dart';
 
-class ProductsModel extends Model {
-  List<Product> _products = [];
-  int _selectedProductIndex;
+class ProductsModel extends ConnectedProducts {
+  
   bool _showFavorites = false;
 
   //we are returning a cop yf original list here
   // so that noone can add product without using our addProduct method
-  List<Product> get products {
-    return List.from(_products);
+  List<Product> get allProducts {
+    return List.from(products);
   }
 
   List<Product> get dislpayedProducts {
     if (_showFavorites) {
-      return _products.where((Product product) => product.isFavorite).toList();
+      return products.where((Product product) => product.isFavorite).toList();
     }
-    return List.from(_products);
+    return List.from(products);
   }
 
   //since there are no such methods by which we can change te value of int so we dont need to return a copy of it,
   // we can return the index itself
-  int get selectedProductIndex {
-    return _selectedProductIndex;
+  int get selelctedProductIndex {
+    return selProductIndex;
   }
 
   Product get selectedProduct {
-    if (_selectedProductIndex == null) {
+    if (selProductIndex == null) {
       return null;
     }
-    return _products[_selectedProductIndex];
+    return products[selProductIndex];
   }
 
   bool get displayFavoritesOnly {
     return _showFavorites;
   }
 
-  void addProduct(Product product) {
-    _products.add(product);
-    _selectedProductIndex = null;
-    notifyListeners();
-  }
 
-  void updateProduct(Product product) {
-    _products[_selectedProductIndex] = product;
-    _selectedProductIndex = null;
+  void updateProduct(String title, String description, String image, double price) {
+    final Product updatedProduct = Product(
+      title: title,
+      description: description,
+      image: image,
+      price: price,
+      userEmail: selectedProduct.userEmail,
+      userId: selectedProduct.userId,
+    );
+    products[selProductIndex] = updatedProduct;
+    selProductIndex = null;
     notifyListeners();
   }
 
   void deleteProduct() {
-    _products.removeAt(_selectedProductIndex);
-    _selectedProductIndex = null;
+    products.removeAt(selProductIndex);
+    selProductIndex = null;
     notifyListeners();
   }
 
@@ -61,18 +64,19 @@ class ProductsModel extends Model {
         title: selectedProduct.title,
         description: selectedProduct.description,
         price: selectedProduct.price,
-        image: selectedProduct.image,
-        isFavorite: newFavoriteStatus);
-    _products[_selectedProductIndex] = updatedProduct;
+        image: selectedProduct.image,userEmail: selectedProduct.userEmail,
+        userId: selectedProduct.userId,
+        isFavorite: newFavoriteStatus
+        );
+    products[selProductIndex] = updatedProduct;
     
     notifyListeners();
-    _selectedProductIndex = null;
+    selProductIndex = null;
   }
 
-  void selectProudct(int index) {
-    _selectedProductIndex = index;
-    notifyListeners();
-  }
+  
+
+
 
   void toogleDisplayMode() {
     _showFavorites = !_showFavorites;

@@ -51,7 +51,7 @@ class ProductCard extends StatelessWidget {
             ),
             color: Colors.red,
             onPressed: () {
-              model.selectProudct(productIndex);
+              model.selectProduct(productIndex);
               model.toogleProductFavoriteStatus();
             },
           );
@@ -70,6 +70,7 @@ class ProductCard extends StatelessWidget {
           _buildTitlePriceRow(),
           //location
           AddressTag('Jaipur,rajasthan'),
+          Text(product.userEmail),
           //action buttons
           _buildActionButtons(context),
         ],
