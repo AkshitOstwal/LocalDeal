@@ -4,10 +4,18 @@ import '../models/product.dart';
 class ProductsModel extends Model {
   List<Product> _products = [];
   int _selectedProductIndex;
+  bool _showFavorites = false;
 
   //we are returning a cop yf original list here
   // so that noone can add product without using our addProduct method
   List<Product> get products {
+    return List.from(_products);
+  }
+
+  List<Product> get dislpayedProducts {
+    if (_showFavorites) {
+      return _products.where((Product product) => product.isFavorite).toList();
+    }
     return List.from(_products);
   }
 
@@ -22,6 +30,10 @@ class ProductsModel extends Model {
       return null;
     }
     return _products[_selectedProductIndex];
+  }
+
+  bool get displayFavoritesOnly {
+    return _showFavorites;
   }
 
   void addProduct(Product product) {
@@ -52,12 +64,18 @@ class ProductsModel extends Model {
         image: selectedProduct.image,
         isFavorite: newFavoriteStatus);
     _products[_selectedProductIndex] = updatedProduct;
-    _selectedProductIndex = null;
+    
     notifyListeners();
+    _selectedProductIndex = null;
   }
 
   void selectProudct(int index) {
     _selectedProductIndex = index;
+    notifyListeners();
+  }
+
+  void toogleDisplayMode() {
+    _showFavorites = !_showFavorites;
     notifyListeners();
   }
 }
