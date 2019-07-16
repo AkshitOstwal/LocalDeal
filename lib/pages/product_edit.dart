@@ -78,7 +78,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   void _submitForm(
-      Function addProduct, Function updateProduct, int selectedProductIndex) {
+      Function addProduct, Function updateProduct, int selectedProductIndex,Function setSelectedProduct) {
     if (!_formKey.currentState.validate()) return null;
     _formKey.currentState.save();
     if (selectedProductIndex == null) {
@@ -96,7 +96,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _formData['price'],
       );
     }
-    Navigator.pushReplacementNamed(context, '/products');
+    Navigator.pushReplacementNamed(context, '/products').then((_)=>setSelectedProduct(null));
   }
 
   Widget _buildSubmitButton() {
@@ -107,7 +107,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
           color: Theme.of(context).accentColor,
           textColor: Colors.white,
           onPressed: () => _submitForm(
-              model.addProduct, model.updateProduct, model.selectedProductIndex),
+              model.addProduct, model.updateProduct, model.selectedProductIndex,model.selectProduct),
         );
       },
     );

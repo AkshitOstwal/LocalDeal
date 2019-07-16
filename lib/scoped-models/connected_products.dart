@@ -18,7 +18,7 @@ class ConnectedProductsModel extends Model {
       userId: _authenticatedUser.id,
     );
     _products.add(newProduct);
-    _selProductIndex = null;
+ 
     notifyListeners();
   }
 
@@ -75,13 +75,12 @@ class ProductsModel extends ConnectedProductsModel {
       userId: selectedProduct.userId,
     );
     _products[_selProductIndex] = updatedProduct;
-    _selProductIndex = null;
+ 
     notifyListeners();
   }
 
   void deleteProduct() {
     _products.removeAt(_selProductIndex);
-    _selProductIndex = null;
     notifyListeners();
   }
 
