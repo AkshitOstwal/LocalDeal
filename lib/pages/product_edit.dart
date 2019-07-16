@@ -107,7 +107,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
           color: Theme.of(context).accentColor,
           textColor: Colors.white,
           onPressed: () => _submitForm(
-              model.addProduct, model.updateProduct, model.selProductIndex),
+              model.addProduct, model.updateProduct, model.selectedProductIndex),
         );
       },
     );
@@ -156,7 +156,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       builder: (BuildContext context, Widget child, MainModel model) {
         final Widget pageContent =
             _buildPageContent(context, model.selectedProduct);
-        return model.selProductIndex == null
+        return model.selectedProductIndex == null
             ? pageContent
             : Scaffold(
                 appBar: AppBar(
