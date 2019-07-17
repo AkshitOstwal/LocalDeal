@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:scoped_model/scoped_model.dart';
+import 'package:http/http.dart' as http;
+
 import '../models/product.dart';
 import '../models/user.dart';
 
@@ -9,17 +13,32 @@ class ConnectedProductsModel extends Model {
 
   void addProduct(
       String title, String description, String image, double price) {
-    final Product newProduct = Product(
-      title: title,
-      description: description,
-      image: image,
-      price: price,
-      userEmail: _authenticatedUser.email,
-      userId: _authenticatedUser.id,
-    );
-    _products.add(newProduct);
- 
-    notifyListeners();
+    final Map<String, dynamic> productData = {
+      'title': title,
+      'description': description,
+      'image':
+          'https://cdn.theatlantic.com/assets/media/img/mt/2016/10/RTR292BE-1/lead_720_405.jpg',
+      'price': price,
+      'userEmail': _authenticatedUser.email,
+      'userId': _authenticatedUser.id,
+    };
+    http
+        .post('https://flutter-products-akshit.firebaseio.com/products.json',
+            body: json.encode(productData))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Product newProduct = Product(
+        id: responseData['name'],
+        title: title,
+        description: description,
+        image: image,
+        price: price,
+        userEmail: _authenticatedUser.email,
+        userId: _authenticatedUser.id,
+      );
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 
   void selectProduct(int index) {
@@ -29,7 +48,6 @@ class ConnectedProductsModel extends Model {
     }
   }
 }
-
 
 class ProductsModel extends ConnectedProductsModel {
   bool _showFavorites = false;
@@ -75,13 +93,36 @@ class ProductsModel extends ConnectedProductsModel {
       userId: selectedProduct.userId,
     );
     _products[_selProductIndex] = updatedProduct;
- 
+
     notifyListeners();
   }
 
   void deleteProduct() {
     _products.removeAt(_selProductIndex);
     notifyListeners();
+  }
+
+  void fetchProducts() {
+    http
+        .get('https://flutter-products-akshit.firebaseio.com/products.json')
+        .then((http.Response response) {
+      final List<Product> fetchedProductsList = [];
+      final Map<String, dynamic> ProductsListData = json.decode(response.body);
+      ProductsListData.forEach((String productId, dynamic productData) {
+        final Product product = Product(
+          id: productId,
+          title: productData['title'],
+          description: productData['description'],
+          image: productData['image'],
+          price: productData['price'],
+          userEmail: productData['userEmail'],
+          userId: productData['userId']
+        );
+        fetchedProductsList.add(product);
+      });
+      _products = fetchedProductsList;
+      notifyListeners();
+    });
   }
 
   void toogleProductFavoriteStatus() {
@@ -106,7 +147,6 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
   }
 }
-
 
 class UserModel extends ConnectedProductsModel {
   void login(String email, String password) {

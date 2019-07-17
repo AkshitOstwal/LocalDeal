@@ -64,7 +64,7 @@ class ProductListPage extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: AssetImage(model.allProducts[index].image),
+                    backgroundImage: NetworkImage(model.allProducts[index].image),
                     radius: 25,
                   ),
                   title: Text(

@@ -8,8 +8,10 @@ class Product {
   final bool isFavorite;
   final String userEmail;
   final String userId;
+  final String id;
 
   Product({
+    @required this.id,
     @required this.title,
     @required this.description,
     @required this.price,
