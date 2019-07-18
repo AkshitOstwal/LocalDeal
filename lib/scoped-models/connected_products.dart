@@ -45,12 +45,6 @@ class ConnectedProductsModel extends Model {
     });
   }
 
-  void selectProduct(int index) {
-    _selProductIndex = index;
-    if (index != null) {
-      notifyListeners();
-    }
-  }
 }
 
 class ProductsModel extends ConnectedProductsModel {
@@ -106,6 +100,13 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
   }
 
+  void selectProduct(int index) {
+    _selProductIndex = index;
+    if (index != null) {
+      notifyListeners();
+    }
+  }
+  
   void fetchProducts() {
     _isLoading = true;
     notifyListeners();
