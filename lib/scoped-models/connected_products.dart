@@ -9,7 +9,7 @@ import '../models/user.dart';
 class ConnectedProductsModel extends Model {
   List<Product> _products = [];
   User _authenticatedUser;
-  int _selProductIndex;
+  String _selProductId;
   bool _isLoading = false;
 
   Future<Null> addProduct(
@@ -64,19 +64,27 @@ class ProductsModel extends ConnectedProductsModel {
 
   //since there are no such methods by which we can change te value of int so we dont need to return a copy of it,
   // we can return the index itself
-  int get selectedProductIndex {
-    return _selProductIndex;
+  String get selectedProductId {
+    return _selProductId;
   }
 
   Product get selectedProduct {
-    if (_selProductIndex == null) {
+    if (_selProductId == null) {
       return null;
     }
-    return _products[_selProductIndex];
+    return _products.firstWhere((Product product) {
+      return product.id == _selProductId;
+    });
   }
 
   bool get displayFavoritesOnly {
     return _showFavorites;
+  }
+
+  int get selectedProductIndex {
+    return _products.indexWhere((Product product) {
+      return product.id == _selProductId;
+    });
   }
 
   Future<Null> updateProduct(
@@ -106,6 +114,7 @@ class ProductsModel extends ConnectedProductsModel {
           price: price,
           userEmail: selectedProduct.userEmail,
           userId: selectedProduct.userId);
+
       _products[selectedProductIndex] = updatedProduct;
       _isLoading = false;
       notifyListeners();
@@ -113,23 +122,24 @@ class ProductsModel extends ConnectedProductsModel {
   }
 
   void deleteProduct() {
-    _isLoading =true;
+    _isLoading = true;
     final String deletedProductId = selectedProduct.id;
+
     _products.removeAt(selectedProductIndex);
-    _selProductIndex = null;
+    _selProductId = null;
     notifyListeners();
     http
         .delete(
             'https://flutter-products-akshit.firebaseio.com/products/${deletedProductId}.json')
         .then((http.Response response) {
-          _isLoading = false;
-          notifyListeners();
-        });
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
-  void selectProduct(int index) {
-    _selProductIndex = index;
-    if (index != null) {
+  void selectProduct(String productId) {
+    _selProductId = productId;
+    if (productId != null) {
       notifyListeners();
     }
   }
@@ -169,6 +179,7 @@ class ProductsModel extends ConnectedProductsModel {
     final bool isCurretlyFavorite = selectedProduct.isFavorite;
     final bool newFavoriteStatus = !isCurretlyFavorite;
     final Product updatedProduct = Product(
+        id: selectedProduct.id,
         title: selectedProduct.title,
         description: selectedProduct.description,
         price: selectedProduct.price,
@@ -176,10 +187,9 @@ class ProductsModel extends ConnectedProductsModel {
         userEmail: selectedProduct.userEmail,
         userId: selectedProduct.userId,
         isFavorite: newFavoriteStatus);
-    _products[_selProductIndex] = updatedProduct;
-
+    _products[selectedProductIndex] = updatedProduct;
     notifyListeners();
-    _selProductIndex = null;
+    _selProductId = null;
   }
 
   void toogleDisplayMode() {
