@@ -12,6 +12,50 @@ class ConnectedProductsModel extends Model {
   String _selProductId;
   bool _isLoading = false;
 
+  
+}
+
+class ProductsModel extends ConnectedProductsModel {
+  bool _showFavorites = false;
+
+  //we are returning a cop yf original list here
+  // so that noone can add product without using our addProduct method
+  List<Product> get allProducts {
+    return List.from(_products);
+  }
+
+  List<Product> get dislpayedProducts {
+    if (_showFavorites) {
+      return _products.where((Product product) => product.isFavorite).toList();
+    }
+    return List.from(_products);
+  }
+
+  //since there are no such methods by which we can change te value of int so we dont need to return a copy of it,
+  // we can return the index itself
+  String get selectedProductId {
+    return _selProductId;
+  }
+
+  Product get selectedProduct {
+    if (_selProductId == null) {
+      return null;
+    }
+    return _products.firstWhere((Product product) {
+      return product.id == _selProductId;
+    });
+  }
+
+  bool get displayFavoritesOnly {
+    return _showFavorites;
+  }
+
+  int get selectedProductIndex {
+    return _products.indexWhere((Product product) {
+      return product.id == _selProductId;
+    });
+  }
+
   Future<bool> addProduct(
       String title, String description, String image, double price) async {
     _isLoading = true;
@@ -59,49 +103,7 @@ class ConnectedProductsModel extends Model {
     //   return false;
     // });
   }
-}
-
-class ProductsModel extends ConnectedProductsModel {
-  bool _showFavorites = false;
-
-  //we are returning a cop yf original list here
-  // so that noone can add product without using our addProduct method
-  List<Product> get allProducts {
-    return List.from(_products);
-  }
-
-  List<Product> get dislpayedProducts {
-    if (_showFavorites) {
-      return _products.where((Product product) => product.isFavorite).toList();
-    }
-    return List.from(_products);
-  }
-
-  //since there are no such methods by which we can change te value of int so we dont need to return a copy of it,
-  // we can return the index itself
-  String get selectedProductId {
-    return _selProductId;
-  }
-
-  Product get selectedProduct {
-    if (_selProductId == null) {
-      return null;
-    }
-    return _products.firstWhere((Product product) {
-      return product.id == _selProductId;
-    });
-  }
-
-  bool get displayFavoritesOnly {
-    return _showFavorites;
-  }
-
-  int get selectedProductIndex {
-    return _products.indexWhere((Product product) {
-      return product.id == _selProductId;
-    });
-  }
-
+  
   Future<bool> updateProduct(
       String title, String description, String image, double price) {
     _isLoading = true;
