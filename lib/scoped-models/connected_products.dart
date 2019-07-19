@@ -106,15 +106,25 @@ class ProductsModel extends ConnectedProductsModel {
           price: price,
           userEmail: selectedProduct.userEmail,
           userId: selectedProduct.userId);
-      _products[_selProductIndex] = updatedProduct;
+      _products[selectedProductIndex] = updatedProduct;
       _isLoading = false;
       notifyListeners();
     });
   }
 
   void deleteProduct() {
-    _products.removeAt(_selProductIndex);
+    _isLoading =true;
+    final String deletedProductId = selectedProduct.id;
+    _products.removeAt(selectedProductIndex);
+    _selProductIndex = null;
     notifyListeners();
+    http
+        .delete(
+            'https://flutter-products-akshit.firebaseio.com/products/${deletedProductId}.json')
+        .then((http.Response response) {
+          _isLoading = false;
+          notifyListeners();
+        });
   }
 
   void selectProduct(int index) {
