@@ -12,7 +12,7 @@ class ConnectedProductsModel extends Model {
   int _selProductIndex;
   bool _isLoading = false;
 
-  Future<Null > addProduct(
+  Future<Null> addProduct(
       String title, String description, String image, double price) {
     _isLoading = true;
     notifyListeners();
@@ -44,7 +44,6 @@ class ConnectedProductsModel extends Model {
       notifyListeners();
     });
   }
-
 }
 
 class ProductsModel extends ConnectedProductsModel {
@@ -80,19 +79,37 @@ class ProductsModel extends ConnectedProductsModel {
     return _showFavorites;
   }
 
-  void updateProduct(
+  Future<Null> updateProduct(
       String title, String description, String image, double price) {
-    final Product updatedProduct = Product(
-      title: title,
-      description: description,
-      image: image,
-      price: price,
-      userEmail: selectedProduct.userEmail,
-      userId: selectedProduct.userId,
-    );
-    _products[_selProductIndex] = updatedProduct;
-
+    _isLoading = true;
     notifyListeners();
+    final Map<String, dynamic> updatedData = {
+      'id': selectedProduct.id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'image':
+          'https://cdn.theatlantic.com/assets/media/img/mt/2016/10/RTR292BE-1/lead_720_405.jpg',
+      'userEmail': selectedProduct.userEmail,
+      'userId': selectedProduct.userId,
+    };
+    return http
+        .put(
+            'https://flutter-products-akshit.firebaseio.com/products/${selectedProduct.id}.json',
+            body: json.encode(updatedData))
+        .then((http.Response response) {
+      final Product updatedProduct = Product(
+          id: selectedProduct.id,
+          title: title,
+          description: description,
+          image: image,
+          price: price,
+          userEmail: selectedProduct.userEmail,
+          userId: selectedProduct.userId);
+      _products[_selProductIndex] = updatedProduct;
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
   void deleteProduct() {
@@ -106,7 +123,7 @@ class ProductsModel extends ConnectedProductsModel {
       notifyListeners();
     }
   }
-  
+
   void fetchProducts() {
     _isLoading = true;
     notifyListeners();
