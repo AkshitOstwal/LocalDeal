@@ -87,9 +87,25 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _formData['description'],
         _formData['image'],
         _formData['price'],
-      ).then((_) {
-        Navigator.pushReplacementNamed(context, '/products')
-            .then((_) => setSelectedProduct(null));
+      ).then((bool success) {
+        success
+            ? Navigator.pushReplacementNamed(context, '/products')
+                .then((_) => setSelectedProduct(null))
+            : showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Something went wrong!!'),
+                    content: Text('Try again later!'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Okay"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  );
+                },
+              );
       });
     } else {
       updateProduct(
@@ -98,9 +114,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _formData['image'],
         _formData['price'],
       )..then((_) {
-        Navigator.pushReplacementNamed(context, '/products')
-            .then((_) => setSelectedProduct(null));
-      });
+          Navigator.pushReplacementNamed(context, '/products')
+              .then((_) => setSelectedProduct(null));
+        });
     }
   }
 
@@ -178,4 +194,3 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 }
- 
