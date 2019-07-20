@@ -70,7 +70,7 @@ class ProductsModel extends ConnectedProductsModel {
     };
     try {
       final http.Response response = await http.post(
-          'https://flutter-products-akshit.firebaseio.com/products.json',
+          'https://flutter-products-akshit.firebaseio.com/products.json?auth=${_authenticatedUser.token}',
           body: json.encode(productData));
       if (response.statusCode != 200 && response.statusCode != 201) {
         _isLoading = false;
@@ -119,7 +119,7 @@ class ProductsModel extends ConnectedProductsModel {
     };
     return http
         .put(
-            'https://flutter-products-akshit.firebaseio.com/products/${selectedProduct.id}.json',
+            'https://flutter-products-akshit.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
             body: json.encode(updatedData))
         .then((http.Response response) {
       final Product updatedProduct = Product(
@@ -150,7 +150,7 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
     return http
         .delete(
-            'https://flutter-products-akshit.firebaseio.com/products/${deletedProductId}.json')
+            'https://flutter-products-akshit.firebaseio.com/products/${deletedProductId}.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
       _isLoading = false;
       notifyListeners();
@@ -173,7 +173,8 @@ class ProductsModel extends ConnectedProductsModel {
     _isLoading = true;
     notifyListeners();
     return http
-        .get('https://flutter-products-akshit.firebaseio.com/products.json')
+        .get(
+            'https://flutter-products-akshit.firebaseio.com/products.json?auth=${_authenticatedUser.token}')
         .then<Null>((http.Response response) {
       final List<Product> fetchedProductsList = [];
       final Map<String, dynamic> productsListData = json.decode(response.body);
@@ -242,14 +243,19 @@ class UserModel extends ConnectedProductsModel {
         body: json.encode(authData));
     final Map<String, dynamic> responseData = json.decode(response.body);
     bool hasError = true;
-    var message = 'Something failed';
-
+    var message = 'Something went wrong';
+    print(json.decode(response.body));
     if (responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication successed';
+      _authenticatedUser = User(
+        id: responseData['localId'],
+        email: email,
+        token: responseData['idToken'],
+      );
     } else if (responseData['error']['message'] == 'EMAIL_NOT_FOUND') {
       message = 'This email is not found';
-    }else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
+    } else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
       message = 'The password is invalid';
     }
     _isLoading = false;
@@ -276,6 +282,10 @@ class UserModel extends ConnectedProductsModel {
     if (responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication successed';
+      _authenticatedUser = User(
+          id: responseData['localId'],
+          email: email,
+          token: responseData['idToken']);
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
       message = 'This email already exixts. Try Log In instead';
     }
