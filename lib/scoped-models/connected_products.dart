@@ -6,9 +6,11 @@ import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:rxdart/subjects.dart';
 
 import '../models/product.dart';
 import '../models/user.dart';
+import '../models/auth.dart';
 
 class ConnectedProductsModel extends Model {
   List<Product> _products = [];
@@ -82,14 +84,13 @@ class ProductsModel extends ConnectedProductsModel {
       }
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Product newProduct = Product(
-        id: responseData['name'],
-        title: title,
-        description: description,
-        image: image,
-        price: price,
-        userEmail: _authenticatedUser.email,
-        userId: _authenticatedUser.id,
-      );
+          id: responseData['name'],
+          title: title,
+          description: description,
+          image: image,
+          price: price,
+          userEmail: _authenticatedUser.email,
+          userId: _authenticatedUser.id);
       _products.add(newProduct);
       _isLoading = false;
       notifyListeners();
@@ -184,23 +185,22 @@ class ProductsModel extends ConnectedProductsModel {
         _isLoading = false;
         notifyListeners();
         return;
-      } 
-        productsListData.forEach((String productId, dynamic productData) {
-          final Product product = Product(
-              id: productId,
-              title: productData['title'],
-              description: productData['description'],
-              image: productData['image'],
-              price: productData['price'],
-              userEmail: productData['userEmail'],
-              userId: productData['userId']);
-          fetchedProductsList.add(product);
-        });
-        _products = fetchedProductsList;
-        _isLoading = false;
-        notifyListeners();
-        _selProductId = null;
-      
+      }
+      productsListData.forEach((String productId, dynamic productData) {
+        final Product product = Product(
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            image: productData['image'],
+            price: productData['price'],
+            userEmail: productData['userEmail'],
+            userId: productData['userId']);
+        fetchedProductsList.add(product);
+      });
+      _products = fetchedProductsList;
+      _isLoading = false;
+      notifyListeners();
+      _selProductId = null;
     }).catchError((error) {
       _isLoading = false;
       notifyListeners();
@@ -233,51 +233,17 @@ class ProductsModel extends ConnectedProductsModel {
 
 class UserModel extends ConnectedProductsModel {
   Timer _authTimer;
-  User get user{
+  PublishSubject<bool> _userSubject = PublishSubject();
+  User get user {
     return _authenticatedUser;
   }
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
-    _isLoading = true;
-    notifyListeners();
-    final Map<String, dynamic> authData = {
-      'email': email,
-      'password': password,
-      'returnSecureToken': true
-    };
-    final http.Response response = await http.post(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBES4n--ZyYB3dtbf2Qf1PJx09ADxgrIcQ',
-        body: json.encode(authData));
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    bool hasError = true;
-    var message = 'Something went wrong';
-    print(json.decode(response.body));
-    if (responseData.containsKey('idToken')) {
-      hasError = false;
-      message = 'Authentication successed';
-      _authenticatedUser = User(
-          id: responseData['localId'],
-          email: email,
-          token: responseData['idToken']);
-      setAuthTimeout(int.parse(responseData['expiresIn']));
-      final DateTime now = DateTime.now();
-      final DateTime expiryTime = now.add(Duration(seconds:int.parse(responseData['expiresIn']) ));
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', responseData['idToken']);
-      prefs.setString('userEmail', email);
-      prefs.setString('userId', responseData['localId']);
-       prefs.setString('expiryTime', expiryTime.toIso8601String());
-    } else if (responseData['error']['message'] == 'EMAIL_NOT_FOUND') {
-      message = 'This email is not found';
-    } else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
-      message = 'The password is invalid';
-    }
-    _isLoading = false;
-    notifyListeners();
-    return {'success': !hasError, 'message': message};
+  PublishSubject<bool> get userSubject {
+    return _userSubject;
   }
 
-  Future<Map<String, dynamic>> signup(String email, String password) async {
+  Future<Map<String, dynamic>> authenticate(String email, String password,
+      [AuthMode mode = AuthMode.Login]) async {
     _isLoading = true;
     notifyListeners();
     final Map<String, dynamic> authData = {
@@ -285,31 +251,47 @@ class UserModel extends ConnectedProductsModel {
       'password': password,
       'returnSecureToken': true
     };
-    final http.Response response = await http.post(
+    http.Response response;
+    if (mode == AuthMode.Login) {
+      response = await http.post(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBES4n--ZyYB3dtbf2Qf1PJx09ADxgrIcQ',
+        body: json.encode(authData),
+        headers: {'Content-Type': 'application/json'},
+      );
+    } else {
+      response = await http.post(
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBES4n--ZyYB3dtbf2Qf1PJx09ADxgrIcQ',
-        body: json.encode(authData));
-    print(json.decode(response.body));
+        body: json.encode(authData),
+        headers: {'Content-Type': 'application/json'},
+      );
+    }
     final Map<String, dynamic> responseData = json.decode(response.body);
     bool hasError = true;
-    var message = 'Something failed';
-
+    String message = 'Something went wrong.';
+    print(responseData);
     if (responseData.containsKey('idToken')) {
       hasError = false;
-      message = 'Authentication successed';
+      message = 'Authentication succeeded!';
       _authenticatedUser = User(
           id: responseData['localId'],
           email: email,
           token: responseData['idToken']);
       setAuthTimeout(int.parse(responseData['expiresIn']));
+      _userSubject.add(true);
       final DateTime now = DateTime.now();
-      final DateTime expiryTime = now.add(Duration(seconds:int.parse(responseData['expiresIn']) ));
+      final DateTime expiryTime =
+          now.add(Duration(seconds: int.parse(responseData['expiresIn'])));
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', responseData['idToken']);
       prefs.setString('userEmail', email);
       prefs.setString('userId', responseData['localId']);
       prefs.setString('expiryTime', expiryTime.toIso8601String());
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
-      message = 'This email already exixts. Try Log In instead';
+      message = 'This email already exists.';
+    } else if (responseData['error']['message'] == 'EMAIL_NOT_FOUND') {
+      message = 'This email was not found.';
+    } else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
+      message = 'The password is invalid.';
     }
     _isLoading = false;
     notifyListeners();
@@ -323,7 +305,7 @@ class UserModel extends ConnectedProductsModel {
     if (token != null) {
       final DateTime now = DateTime.now();
       final parsedExpiryTime = DateTime.parse(expiryTimeString);
-      if(parsedExpiryTime.isBefore(now)){
+      if (parsedExpiryTime.isBefore(now)) {
         _authenticatedUser = null;
         notifyListeners();
         return;
@@ -331,13 +313,14 @@ class UserModel extends ConnectedProductsModel {
       final String userEmail = prefs.getString('userEmail');
       final String userId = prefs.getString('userId');
       final int tokenLifespan = parsedExpiryTime.difference(now).inSeconds;
-      _authenticatedUser = User(id: userId,email: userEmail,token: token);
+      _authenticatedUser = User(id: userId, email: userEmail, token: token);
+      _userSubject.add(true);
       setAuthTimeout(tokenLifespan);
       notifyListeners();
     }
   }
 
-  void logout()async{
+  void logout() async {
     print('logout');
     _authenticatedUser = null;
     _authTimer.cancel();
@@ -346,8 +329,12 @@ class UserModel extends ConnectedProductsModel {
     prefs.remove('userEmail');
     prefs.remove('userId');
   }
-  void setAuthTimeout(int time){
-    _authTimer = Timer(Duration(milliseconds: time ),logout);
+
+  void setAuthTimeout(int time) {
+    _authTimer = Timer(Duration(seconds: time), () {
+      logout();
+      _userSubject.add(false);
+    });
   }
 }
 
