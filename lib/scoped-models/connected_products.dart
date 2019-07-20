@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/animation.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,8 +12,6 @@ class ConnectedProductsModel extends Model {
   User _authenticatedUser;
   String _selProductId;
   bool _isLoading = false;
-
-  
 }
 
 class ProductsModel extends ConnectedProductsModel {
@@ -103,7 +102,7 @@ class ProductsModel extends ConnectedProductsModel {
     //   return false;
     // });
   }
-  
+
   Future<bool> updateProduct(
       String title, String description, String image, double price) {
     _isLoading = true;
@@ -230,8 +229,59 @@ class ProductsModel extends ConnectedProductsModel {
 }
 
 class UserModel extends ConnectedProductsModel {
-  void login(String email, String password) {
-    _authenticatedUser = User(id: '00001', email: email, password: password);
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> authData = {
+      'email': email,
+      'password': password,
+      'returnSecureToken': true
+    };
+    final http.Response response = await http.post(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBES4n--ZyYB3dtbf2Qf1PJx09ADxgrIcQ',
+        body: json.encode(authData));
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    bool hasError = true;
+    var message = 'Something failed';
+
+    if (responseData.containsKey('idToken')) {
+      hasError = false;
+      message = 'Authentication successed';
+    } else if (responseData['error']['message'] == 'EMAIL_NOT_FOUND') {
+      message = 'This email is not found';
+    }else if (responseData['error']['message'] == 'INVALID_PASSWORD') {
+      message = 'The password is invalid';
+    }
+    _isLoading = false;
+    notifyListeners();
+    return {'success': !hasError, 'message': message};
+  }
+
+  Future<Map<String, dynamic>> signup(String email, String password) async {
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> authData = {
+      'email': email,
+      'password': password,
+      'returnSecureToken': true
+    };
+    final http.Response response = await http.post(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBES4n--ZyYB3dtbf2Qf1PJx09ADxgrIcQ',
+        body: json.encode(authData));
+    print(json.decode(response.body));
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    bool hasError = true;
+    var message = 'Something failed';
+
+    if (responseData.containsKey('idToken')) {
+      hasError = false;
+      message = 'Authentication successed';
+    } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
+      message = 'This email already exixts. Try Log In instead';
+    }
+    _isLoading = false;
+    notifyListeners();
+    return {'success': !hasError, 'message': message};
   }
 }
 
