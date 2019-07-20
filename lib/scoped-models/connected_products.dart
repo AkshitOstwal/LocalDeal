@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/animation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -303,6 +304,8 @@ class UserModel extends ConnectedProductsModel {
   }
 
   void autoAuthenticate() async {
+    _isLoading = true;
+    notifyListeners();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String token = prefs.getString('token');
     if (token != null) {
@@ -311,6 +314,16 @@ class UserModel extends ConnectedProductsModel {
       _authenticatedUser = User(id: userId,email: userEmail,token: token);
       notifyListeners();
     }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  void logout()async{
+    _authenticatedUser = null;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('token');
+    prefs.remove('userEmail');
+    prefs.remove('userId');
   }
 }
 
