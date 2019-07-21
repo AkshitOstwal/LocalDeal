@@ -19,14 +19,29 @@ class _ProductEditPageState extends State<ProductEditPage> {
     'image': 'assets/food.jpg'
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _titleTextController  = TextEditingController();
+  final _descriptionTextController  = TextEditingController();
+  final _priceTextController  = TextEditingController();
 
   Widget _buildTitleTextField(Product product) {
+    if(product == null && _titleTextController.text.trim() == ''){
+      _titleTextController.text = '';
+    }else if(product != null && _titleTextController.text.trim() == ''){
+      _titleTextController.text = product.title;
+    }else if(product != null && _titleTextController.text.trim() != ''){
+      _titleTextController.text = _titleTextController.text;
+    }else if(product == null && _titleTextController.text.trim() != ''){
+      _titleTextController.text = _titleTextController.text;
+    }else{
+      _titleTextController.text = '';
+    }
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Title',
         hintText: 'Enter Tilte of Product',
       ),
-      initialValue: product == null ? null : product.title,
+      controller: _titleTextController,
+      // initialValue: product == null ? null : product.title,
       validator: (String value) {
         if (value.isEmpty || value.length < 5) {
           return "Title is required and should be 5+ character";
@@ -39,15 +54,27 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildDescriptionTeftField(Product product) {
+     if(product == null && _descriptionTextController.text.trim() == ''){
+      _descriptionTextController.text = '';
+    }else if(product != null && _descriptionTextController.text.trim() == ''){
+      _descriptionTextController.text = product.title;
+    }else if(product != null && _descriptionTextController.text.trim() != ''){
+      _descriptionTextController.text = _descriptionTextController.text;
+    }else if(product == null && _descriptionTextController.text.trim() != ''){
+      _descriptionTextController.text = _descriptionTextController.text;
+    }else{
+      _descriptionTextController.text = '';
+    }
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Description',
         hintText: 'Enter Description of product',
       ),
+      controller: _descriptionTextController,
       onSaved: (String value) {
         _formData['description'] = value;
       },
-      initialValue: product == null ? null : product.description,
+      // initialValue: product == null ? null : product.description,
       validator: (String value) {
         if (value.isEmpty || value.length < 10) {
           return "Description is required and should be 10+ character";
@@ -59,15 +86,26 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildPriceTextField(Product product) {
+     if(product == null && _priceTextController.text.trim() == ''){
+      _priceTextController.text = '';
+    }else if(product != null && _priceTextController.text.trim() == ''){
+      _priceTextController.text = product.title;
+    }else if(product != null && _priceTextController.text.trim() != ''){
+      _priceTextController.text = _priceTextController.text;
+    }else if(product == null && _priceTextController.text.trim() != ''){
+      _priceTextController.text = _priceTextController.text;
+    }else{
+      _priceTextController.text = '';
+    }
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Price',
         hintText: 'Enter Price',
-      ),
+      ),controller: _priceTextController,
       onSaved: (String value) {
         _formData['price'] = double.parse(value);
       },
-      initialValue: product == null ? null : product.price.toString(),
+      // initialValue: product == null ? null : product.price.toString(),
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -84,10 +122,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
     if (selectedProductIndex == -1) {
       addProduct(
-        _formData['title'],
-        _formData['description'],
+        _titleTextController.text,
+        _descriptionTextController.text,
         _formData['image'],
-        _formData['price'],
+        double.parse(_priceTextController.text),
       ).then((bool success) {
         success
             ? Navigator.pushReplacementNamed(context, '/products')
@@ -110,10 +148,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
       });
     } else {
       updateProduct(
-        _formData['title'],
-        _formData['description'],
+        _titleTextController.text,
+        _descriptionTextController.text,
         _formData['image'],
-        _formData['price'],
+        double.parse(_priceTextController.text),
       ).then((bool success) {
         success
             ? Navigator.pushReplacementNamed(context, '/products')
