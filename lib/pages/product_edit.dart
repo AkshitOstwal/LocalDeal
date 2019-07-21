@@ -176,6 +176,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
               SizedBox(
                 height: 15,
               ),
+              SizedBox(
+                height: 15,
+              ),
               _buildSubmitButton(),
               // GestureDetector(
               //   child: Container(
