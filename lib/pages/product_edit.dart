@@ -1,4 +1,5 @@
 import 'package:firstapp/models/product.dart';
+import 'package:firstapp/widgets/form_inputs/image.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/main.dart';
@@ -176,6 +177,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
               SizedBox(
                 height: 15,
               ),
+              ImageInput(),
               SizedBox(
                 height: 15,
               ),
