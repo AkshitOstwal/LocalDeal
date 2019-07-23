@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firstapp/models/product.dart';
 import 'package:firstapp/widgets/form_inputs/image.dart';
 import 'package:flutter/material.dart';
@@ -16,23 +18,23 @@ class _ProductEditPageState extends State<ProductEditPage> {
     'title': null,
     'description': null,
     'price': null,
-    'image': 'assets/food.jpg'
+    'image': null,
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _titleTextController  = TextEditingController();
-  final _descriptionTextController  = TextEditingController();
-  final _priceTextController  = TextEditingController();
+  final _titleTextController = TextEditingController();
+  final _descriptionTextController = TextEditingController();
+  final _priceTextController = TextEditingController();
 
   Widget _buildTitleTextField(Product product) {
-    if(product == null && _titleTextController.text.trim() == ''){
+    if (product == null && _titleTextController.text.trim() == '') {
       _titleTextController.text = '';
-    }else if(product != null && _titleTextController.text.trim() == ''){
+    } else if (product != null && _titleTextController.text.trim() == '') {
       _titleTextController.text = product.title;
-    }else if(product != null && _titleTextController.text.trim() != ''){
+    } else if (product != null && _titleTextController.text.trim() != '') {
       _titleTextController.text = _titleTextController.text;
-    }else if(product == null && _titleTextController.text.trim() != ''){
+    } else if (product == null && _titleTextController.text.trim() != '') {
       _titleTextController.text = _titleTextController.text;
-    }else{
+    } else {
       _titleTextController.text = '';
     }
     return TextFormField(
@@ -48,21 +50,24 @@ class _ProductEditPageState extends State<ProductEditPage> {
         }
       },
       onSaved: (String value) {
-        _formData['title'] = value;
+        _formData['title'] = _titleTextController.text;
       },
     );
   }
 
   Widget _buildDescriptionTeftField(Product product) {
-     if(product == null && _descriptionTextController.text.trim() == ''){
+    if (product == null && _descriptionTextController.text.trim() == '') {
       _descriptionTextController.text = '';
-    }else if(product != null && _descriptionTextController.text.trim() == ''){
+    } else if (product != null &&
+        _descriptionTextController.text.trim() == '') {
       _descriptionTextController.text = product.title;
-    }else if(product != null && _descriptionTextController.text.trim() != ''){
+    } else if (product != null &&
+        _descriptionTextController.text.trim() != '') {
       _descriptionTextController.text = _descriptionTextController.text;
-    }else if(product == null && _descriptionTextController.text.trim() != ''){
+    } else if (product == null &&
+        _descriptionTextController.text.trim() != '') {
       _descriptionTextController.text = _descriptionTextController.text;
-    }else{
+    } else {
       _descriptionTextController.text = '';
     }
     return TextFormField(
@@ -72,7 +77,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       ),
       controller: _descriptionTextController,
       onSaved: (String value) {
-        _formData['description'] = value;
+        _formData['description'] = _descriptionTextController.text;
       },
       // initialValue: product == null ? null : product.description,
       validator: (String value) {
@@ -86,24 +91,25 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildPriceTextField(Product product) {
-     if(product == null && _priceTextController.text.trim() == ''){
+    if (product == null && _priceTextController.text.trim() == '') {
       _priceTextController.text = '';
-    }else if(product != null && _priceTextController.text.trim() == ''){
+    } else if (product != null && _priceTextController.text.trim() == '') {
       _priceTextController.text = product.title;
-    }else if(product != null && _priceTextController.text.trim() != ''){
+    } else if (product != null && _priceTextController.text.trim() != '') {
       _priceTextController.text = _priceTextController.text;
-    }else if(product == null && _priceTextController.text.trim() != ''){
+    } else if (product == null && _priceTextController.text.trim() != '') {
       _priceTextController.text = _priceTextController.text;
-    }else{
+    } else {
       _priceTextController.text = '';
     }
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Price',
         hintText: 'Enter Price',
-      ),controller: _priceTextController,
+      ),
+      controller: _priceTextController,
       onSaved: (String value) {
-        _formData['price'] = double.parse(value);
+        _formData['price'] = double.parse(_priceTextController.text);
       },
       // initialValue: product == null ? null : product.price.toString(),
       validator: (String value) {
@@ -116,9 +122,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
+  void _setImage(File image) {
+    _formData['image'] = image;
+  }
+
   void _submitForm(Function addProduct, Function updateProduct,
       int selectedProductIndex, Function setSelectedProduct) {
-    if (!_formKey.currentState.validate()) return null;
+    if (!_formKey.currentState.validate() ||
+        (_formData['image'] == null && selectedProductIndex == -1)) return null;
     _formKey.currentState.save();
     if (selectedProductIndex == -1) {
       addProduct(
@@ -215,7 +226,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
               SizedBox(
                 height: 15,
               ),
-              ImageInput(),
+              ImageInput(_setImage, product),
               SizedBox(
                 height: 15,
               ),
