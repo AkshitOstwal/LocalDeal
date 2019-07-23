@@ -7,16 +7,16 @@ import 'package:image_picker/image_picker.dart';
 class ImageInput extends StatefulWidget {
   final Function setImage;
   final Product product;
-   
-  ImageInput(this.setImage,this.product);
+
+  ImageInput(this.setImage, this.product);
 
   @override
   State<StatefulWidget> createState() {
-    return _ImageeInputstate();
+    return _ImageInputState();
   }
 }
 
-class _ImageeInputstate extends State<ImageInput> {
+class _ImageInputState extends State<ImageInput> {
   File _imageFile;
 
   void _getImage(BuildContext context, ImageSource source) {
@@ -36,37 +36,31 @@ class _ImageeInputstate extends State<ImageInput> {
           return Container(
             padding: EdgeInsets.all(10),
             height: 150,
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Pick an Image',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+            child: Column(children: <Widget>[
+              Text(
+                'Pick an Image',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                FlatButton(
-                  child: Text(
-                    'Use Camera',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () {
-                    _getImage(context, ImageSource.camera);
-                  },
-                ),
-                FlatButton(
-                  child: Text(
-                    'Use Gallery',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () {
-                    _getImage(context, ImageSource.gallery);
-                  },
-                )
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FlatButton(
+                textColor: Theme.of(context).primaryColor,
+                child: Text('Use Camera'),
+                onPressed: () {
+                  _getImage(context, ImageSource.camera);
+                },
+              ),
+              FlatButton(
+                textColor: Theme.of(context).primaryColor,
+                child: Text('Use Gallery'),
+                onPressed: () {
+                  _getImage(context, ImageSource.gallery);
+                },
+              )
+            ]),
           );
         });
   }
@@ -74,6 +68,25 @@ class _ImageeInputstate extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     final buttonColor = Theme.of(context).primaryColor;
+    Widget previewImage = Text('Please select an image.');
+    if (_imageFile != null) {
+      previewImage = Image.file(
+        _imageFile,
+        height: 300.0,
+        width: MediaQuery.of(context).size.width,
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
+      );
+    } else if (widget.product != null) {
+      previewImage = Image.network(
+        widget.product.image,
+        height: 300.0,
+        width: MediaQuery.of(context).size.width,
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
+      );
+    }
+
     return Column(
       children: <Widget>[
         OutlineButton(
@@ -88,6 +101,9 @@ class _ImageeInputstate extends State<ImageInput> {
                 Icons.camera_alt,
                 color: buttonColor,
               ),
+              SizedBox(
+                width: 5.0,
+              ),
               Text(
                 'Add Image',
                 style: TextStyle(color: buttonColor),
@@ -98,15 +114,7 @@ class _ImageeInputstate extends State<ImageInput> {
         SizedBox(
           height: 10,
         ),
-        _imageFile == null
-            ? Text('Please pick an image.')
-            : Image.file(
-                _imageFile,
-                height: 300.0,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-              )
+        previewImage,
       ],
     );
   }

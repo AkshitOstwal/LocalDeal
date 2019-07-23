@@ -60,7 +60,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       _descriptionTextController.text = '';
     } else if (product != null &&
         _descriptionTextController.text.trim() == '') {
-      _descriptionTextController.text = product.title;
+      _descriptionTextController.text = product.description;
     } else if (product != null &&
         _descriptionTextController.text.trim() != '') {
       _descriptionTextController.text = _descriptionTextController.text;
@@ -94,7 +94,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     if (product == null && _priceTextController.text.trim() == '') {
       _priceTextController.text = '';
     } else if (product != null && _priceTextController.text.trim() == '') {
-      _priceTextController.text = product.title;
+      _priceTextController.text = product.price.toString();
     } else if (product != null && _priceTextController.text.trim() != '') {
       _priceTextController.text = _priceTextController.text;
     } else if (product == null && _priceTextController.text.trim() != '') {
@@ -122,69 +122,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  void _setImage(File image) {
-    _formData['image'] = image;
-  }
-
-  void _submitForm(Function addProduct, Function updateProduct,
-      int selectedProductIndex, Function setSelectedProduct) {
-    if (!_formKey.currentState.validate() ||
-        (_formData['image'] == null && selectedProductIndex == -1)) return null;
-    _formKey.currentState.save();
-    if (selectedProductIndex == -1) {
-      addProduct(
-        _titleTextController.text,
-        _descriptionTextController.text,
-        _formData['image'],
-        double.parse(_priceTextController.text),
-      ).then((bool success) {
-        success
-            ? Navigator.pushReplacementNamed(context, '/products')
-                .then((_) => setSelectedProduct(null))
-            : showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Something went wrong!!'),
-                    content: Text('Try again later!'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text("Okay"),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  );
-                },
-              );
-      });
-    } else {
-      updateProduct(
-        _titleTextController.text,
-        _descriptionTextController.text,
-        _formData['image'],
-        double.parse(_priceTextController.text),
-      ).then((bool success) {
-        success
-            ? Navigator.pushReplacementNamed(context, '/products')
-                .then((_) => setSelectedProduct(null))
-            : showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Something went wrong!!'),
-                    content: Text('Try again later!'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text("Okay"),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                    ],
-                  );
-                },
-              );
-      });
-    }
-  }
 
   Widget _buildSubmitButton() {
     return ScopedModelDescendant<MainModel>(
@@ -246,6 +183,69 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
+  void _setImage(File image) {
+    _formData['image'] = image;
+  }
+
+  void _submitForm(Function addProduct, Function updateProduct,
+      int selectedProductIndex, Function setSelectedProduct) {
+    if (!_formKey.currentState.validate() ||
+        (_formData['image'] == null && selectedProductIndex == -1)) return null;
+    _formKey.currentState.save();
+    if (selectedProductIndex == -1) {
+      addProduct(
+        _titleTextController.text,
+        _descriptionTextController.text,
+        _formData['image'],
+        double.parse(_priceTextController.text),
+      ).then((bool success) {
+        success
+            ? Navigator.pushReplacementNamed(context, '/products')
+                .then((_) => setSelectedProduct(null))
+            : showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Something went wrong!!'),
+                    content: Text('Try again later!'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Okay"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  );
+                },
+              );
+      });
+    } else {
+      updateProduct(
+        _titleTextController.text,
+        _descriptionTextController.text,
+        _formData['image'],
+        double.parse(_priceTextController.text),
+      ).then((bool success) {
+        success
+            ? Navigator.pushReplacementNamed(context, '/products')
+                .then((_) => setSelectedProduct(null))
+            : showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Something went wrong!!'),
+                    content: Text('Try again laterrr!'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Okay"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  );
+                },
+              );
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
