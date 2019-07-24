@@ -98,7 +98,8 @@ class ProductPage extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 Container(
                   padding: EdgeInsets.all(10.0),
-                  child: Center(child:TitleDefault(product.title)),
+                  child: TitleDefault(product.title),
+                  alignment:  Alignment.center,
                 ),
                 _buildAddressPriceRow(product.price),
                 Container(
