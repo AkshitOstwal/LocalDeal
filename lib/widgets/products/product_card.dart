@@ -72,12 +72,13 @@ class ProductCard extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          FadeInImage(
+          Hero(tag: product.id,
+            child: FadeInImage(
             image: NetworkImage(product.image),
             placeholder: AssetImage('assets/food.jpg'),
             height: 300,
             fit: BoxFit.cover,
-          ),
+          ),),
           //title
           _buildTitlePriceRow(),
           //location
