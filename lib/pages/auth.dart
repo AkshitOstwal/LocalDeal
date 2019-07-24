@@ -20,10 +20,13 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   final TextEditingController _passwordTextController = TextEditingController();
   AuthMode _authMode = AuthMode.Login;
   AnimationController _controller;
+  Animation<Offset> _slideAnimation;
 
   void initState() {
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _slideAnimation = Tween<Offset>(begin: Offset(0.0, -1.5), end: Offset.zero)
+        .animate(CurvedAnimation(parent: _controller,curve: Curves.fastOutSlowIn));
     super.initState();
   }
 
@@ -80,7 +83,8 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   Widget _buildPasswordConfirmTextField() {
     return FadeTransition(
         opacity: CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-        child: TextFormField(
+        child: SlideTransition(position: _slideAnimation,
+            child: TextFormField(
           decoration: InputDecoration(
             labelText: 'Confirm Password',
             filled: true,
@@ -88,11 +92,12 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
           ),
           obscureText: true,
           validator: (String value) {
-            if (value != _passwordTextController.text && _authMode == AuthMode.Signup) {
+            if (value != _passwordTextController.text &&
+                _authMode == AuthMode.Signup) {
               return 'Password Do not match';
-            }
+            } 
           },
-        ));
+        )));
   }
 
   Widget _buildAcceptSwitch() {
