@@ -1,6 +1,7 @@
 import 'package:firstapp/models/product.dart';
 import 'package:firstapp/scoped-models/main.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -64,7 +65,7 @@ class _ProductFABState extends State<ProductFAB> with TickerProviderStateMixin {
                 child: ScaleTransition(
                     scale: CurvedAnimation(
                       parent: _controller,
-                      curve: Interval(0.0, 1.0, curve: Curves.easeOut),
+                      curve: Interval(0.0, 0.5, curve: Curves.easeOut),
                     ),
                     child: FloatingActionButton(
                       backgroundColor: Theme.of(context).cardColor,
@@ -89,7 +90,17 @@ class _ProductFABState extends State<ProductFAB> with TickerProviderStateMixin {
                   _controller.reverse();
                 }
               },
-              child: Icon(Icons.more_vert),
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (BuildContext context, Widget child) {
+                  return Transform(
+                    alignment: FractionalOffset.center,
+                    transform:
+                        Matrix4.rotationZ(_controller.value  * 1 * math.pi),
+                    child: Icon(_controller.isDismissed ? Icons.more_vert:Icons.close),
+                  );
+                },
+              ),
             ),
           ],
         );
