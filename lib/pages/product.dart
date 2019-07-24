@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firstapp/models/product.dart';
+import 'package:firstapp/widgets/products/productFAB.dart';
 
 import '../widgets/ui_elements/title_default.dart';
 import '../scoped-models/main.dart';
@@ -97,6 +98,7 @@ class ProductPage extends StatelessWidget {
             )
           ],
         ),
+        floatingActionButton: ProductFAB(product),
       ),
     );
   }

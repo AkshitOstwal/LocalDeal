@@ -32,7 +32,7 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-   return ScopedModelDescendant<MainModel>(
+    return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return ButtonBar(
           alignment: MainAxisAlignment.center,
@@ -40,8 +40,14 @@ class ProductCard extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.info),
               color: Theme.of(context).accentColor,
-              onPressed: () => Navigator.pushNamed<bool>(
-                  context, '/product/' + model.allProducts[productIndex].id),
+              onPressed: () {
+                model.selectProduct(model.allProducts[productIndex].id);
+                Navigator.pushNamed<bool>(context,
+                        '/product/' + model.allProducts[productIndex].id)
+                    .then((_) {
+                  model.selectProduct(null);
+                });
+              },
             ),
             IconButton(
               icon: Icon(
@@ -76,7 +82,6 @@ class ProductCard extends StatelessWidget {
           _buildTitlePriceRow(),
           //location
           AddressTag('Jaipur,rajasthan'),
-          Text(product.userEmail),
           //action buttons
           _buildActionButtons(context),
         ],
