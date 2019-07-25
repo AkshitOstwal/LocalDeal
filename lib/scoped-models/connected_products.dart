@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/animation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mime/mime.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -183,7 +181,7 @@ class ProductsModel extends ConnectedProductsModel {
       'userId': selectedProduct.userId,
     };
     try {
-      final http.Response response = await http.put(
+      await http.put(
           'https://flutter-products-akshit.firebaseio.com/products/${selectedProduct.id}.json?auth=${_authenticatedUser.token}',
           body: json.encode(updatedData));
 
@@ -216,7 +214,7 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
     return http
         .delete(
-            'https://flutter-products-akshit.firebaseio.com/products/${deletedProductId}.json?auth=${_authenticatedUser.token}')
+            'https://flutter-products-akshit.firebaseio.com/products/$deletedProductId.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
       _isLoading = false;
       notifyListeners();

@@ -26,7 +26,8 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _slideAnimation = Tween<Offset>(begin: Offset(0.0, -1.5), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _controller,curve: Curves.fastOutSlowIn));
+        .animate(
+            CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
     super.initState();
   }
 
@@ -53,6 +54,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                 .hasMatch(value)) {
           return 'Please enter a valid email';
         }
+        return null;
       },
       onSaved: (String value) {
         _formData['email'] = value;
@@ -73,6 +75,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
         if (value.isEmpty || value.length < 6) {
           return 'Password invalid';
         }
+        return null;
       },
       onSaved: (String value) {
         _formData['password'] = value;
@@ -83,21 +86,23 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   Widget _buildPasswordConfirmTextField() {
     return FadeTransition(
         opacity: CurvedAnimation(parent: _controller, curve: Curves.easeIn),
-        child: SlideTransition(position: _slideAnimation,
+        child: SlideTransition(
+            position: _slideAnimation,
             child: TextFormField(
-          decoration: InputDecoration(
-            labelText: 'Confirm Password',
-            filled: true,
-            fillColor: Colors.white.withOpacity(0.7),
-          ),
-          obscureText: true,
-          validator: (String value) {
-            if (value != _passwordTextController.text &&
-                _authMode == AuthMode.Signup) {
-              return 'Password Do not match';
-            } 
-          },
-        )));
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.7),
+              ),
+              obscureText: true,
+              validator: (String value) {
+                if (value != _passwordTextController.text &&
+                    _authMode == AuthMode.Signup) {
+                  return 'Password Do not match';
+                }
+                return null;
+              },
+            )));
   }
 
   Widget _buildAcceptSwitch() {

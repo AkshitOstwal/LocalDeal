@@ -81,7 +81,9 @@ class ProductCard extends StatelessWidget {
           ),),
           //title
           _buildTitlePriceRow(),
+          SizedBox(height: 10,),
           //location
+          
           AddressTag('Jaipur,rajasthan'),
           //action buttons
           _buildActionButtons(context),

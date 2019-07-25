@@ -1,4 +1,3 @@
-import 'package:firstapp/models/product.dart';
 import 'package:firstapp/widgets/ui_elements/logout_listtile.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';

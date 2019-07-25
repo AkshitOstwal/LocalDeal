@@ -48,6 +48,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         if (value.isEmpty || value.length < 5) {
           return "Title is required and should be 5+ character";
         }
+        return null;
       },
       onSaved: (String value) {
         _formData['title'] = _titleTextController.text;
@@ -84,6 +85,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         if (value.isEmpty || value.length < 10) {
           return "Description is required and should be 10+ character";
         }
+        return null;
       },
       keyboardType: TextInputType.multiline,
       maxLines: null,
@@ -117,11 +119,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
             !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
           return "Price is required and should be a number";
         }
+        return null;
       },
       keyboardType: TextInputType.number,
     );
   }
-
 
   Widget _buildSubmitButton() {
     return ScopedModelDescendant<MainModel>(
@@ -246,6 +248,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
