@@ -1,5 +1,6 @@
 import 'package:firstapp/models/auth.dart';
 import 'package:firstapp/scoped-models/main.dart';
+import 'package:firstapp/widgets/ui_elements/adaptive_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -210,7 +211,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                                 MainModel model) {
                               return model.isLoading
                                   ? Container(
-                                      child: CircularProgressIndicator(),
+                                      child: AdaptiveProgressIndicator(),
                                       padding: EdgeInsets.all(3),
                                     )
                                   : RaisedButton(

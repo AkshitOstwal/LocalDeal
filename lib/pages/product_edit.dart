@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firstapp/models/product.dart';
 import 'package:firstapp/widgets/form_inputs/image.dart';
+import 'package:firstapp/widgets/ui_elements/adaptive_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -129,9 +130,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       builder: (BuildContext context, Widget child, MainModel model) {
         return model.isLoading
             ? Center(
-                child: Theme.of(context).platform == TargetPlatform.iOS
-                    ? CupertinoActivityIndicator()
-                    : CircularProgressIndicator())
+                child: AdaptiveProgressIndicator())
             : RaisedButton(
                 child: Text('Save'),
                 color: Theme.of(context).accentColor,
