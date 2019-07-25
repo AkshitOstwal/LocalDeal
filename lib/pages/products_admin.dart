@@ -16,6 +16,8 @@ class ProductAdminPage extends StatelessWidget {
           AppBar(
             automaticallyImplyLeading: false,
             title: Text("Choose"),
+            elevation:
+                Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
           ),
           ListTile(
             leading: Icon(Icons.shop),
@@ -24,7 +26,10 @@ class ProductAdminPage extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/');
             },
           ),
-          Divider(height: 2,color: Colors.grey,),
+          Divider(
+            height: 2,
+            color: Colors.grey,
+          ),
           LogoutListTile(),
         ],
       ),
@@ -43,6 +48,8 @@ class ProductAdminPage extends StatelessWidget {
           drawer: _buildSideDrawer(context),
           appBar: AppBar(
             title: Text("Manage Products"),
+            elevation:
+                Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
             bottom: TabBar(
               tabs: <Widget>[
                 Tab(

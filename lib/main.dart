@@ -1,4 +1,5 @@
 import 'package:firstapp/models/product.dart';
+import 'package:firstapp/pages/shared/adaptive_theme.dart';
 import 'package:firstapp/scoped-models/main.dart';
 import 'package:firstapp/widgets/helpers/custom_route.dart';
 
@@ -49,11 +50,7 @@ class _MyAppState extends State<MyApp> {
       model: _model,
       child: MaterialApp(
         // debugShowMaterialGrid: true,
-        theme: ThemeData(
-            brightness: Brightness.light,
-            primarySwatch: Colors.deepOrange,
-            accentColor: Colors.deepPurple,
-            buttonColor: Colors.deepPurple),
+        theme: getAdaptiveThemeData(context),
         // home: AuthPage(),
         routes: {
           '/': (BuildContext context) => !_isAuthenticated ? AuthPage() : ProductsPage(_model),
