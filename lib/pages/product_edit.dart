@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firstapp/models/product.dart';
 import 'package:firstapp/widgets/form_inputs/image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/main.dart';
@@ -110,7 +111,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         hintText: 'Enter Price',
       ),
       controller: _priceTextController,
-      
+
       // initialValue: product == null ? null : product.price.toString(),
       validator: (String value) {
         if (value.isEmpty ||
@@ -127,7 +128,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return model.isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? Center(
+                child: Theme.of(context).platform == TargetPlatform.iOS
+                    ? CupertinoActivityIndicator()
+                    : CircularProgressIndicator())
             : RaisedButton(
                 child: Text('Save'),
                 color: Theme.of(context).accentColor,
