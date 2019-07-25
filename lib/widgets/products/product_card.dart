@@ -9,9 +9,9 @@ import '../ui_elements/title_default.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  final int productIndex;
+  
 
-  ProductCard(this.product, this.productIndex);
+  ProductCard(this.product,);
   //now we are using a particular index of list as an argument + the index also
 
   Widget _buildTitlePriceRow() {
@@ -41,9 +41,9 @@ class ProductCard extends StatelessWidget {
               icon: Icon(Icons.info),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                model.selectProduct(model.allProducts[productIndex].id);
+                model.selectProduct(product.id);
                 Navigator.pushNamed<bool>(context,
-                        '/product/' + model.allProducts[productIndex].id)
+                        '/product/' + product.id)
                     .then((_) {
                   model.selectProduct(null);
                 });
@@ -51,13 +51,13 @@ class ProductCard extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(
-                model.allProducts[productIndex].isFavorite
+                product.isFavorite
                     ? Icons.favorite
                     : Icons.favorite_border,
               ),
               color: Colors.red,
               onPressed: () {
-                model.selectProduct(model.allProducts[productIndex].id);
+                model.selectProduct(product.id);
                 model.toogleProductFavoriteStatus();
               },
             ),
