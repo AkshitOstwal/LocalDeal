@@ -20,12 +20,12 @@ class ProductCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          TitleDefault(product.title),
-          SizedBox(
+          Flexible(child:TitleDefault(product.title)),
+          Flexible(child:SizedBox(
             width: 8.0,
-          ),
+          )),
           //price
-          PriceTag(product.price.toString())
+          Flexible(child:PriceTag(product.price.toString()))
         ],
       ),
     );
