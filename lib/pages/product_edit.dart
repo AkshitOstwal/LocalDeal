@@ -110,13 +110,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
         hintText: 'Enter Price',
       ),
       controller: _priceTextController,
-      onSaved: (String value) {
-        _formData['price'] = double.parse(_priceTextController.text);
-      },
+      
       // initialValue: product == null ? null : product.price.toString(),
       validator: (String value) {
         if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+            !RegExp(r'^(?:[1-9]\d*|0)?(?:[.,]\d+)?$').hasMatch(value)) {
           return "Price is required and should be a number";
         }
         return null;
@@ -199,7 +197,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _titleTextController.text,
         _descriptionTextController.text,
         _formData['image'],
-        double.parse(_priceTextController.text),
+        double.parse(_priceTextController.text.replaceFirst(RegExp(r','), '.')),
       ).then((bool success) {
         success
             ? Navigator.pushReplacementNamed(context, '/products')
@@ -225,7 +223,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _titleTextController.text,
         _descriptionTextController.text,
         _formData['image'],
-        double.parse(_priceTextController.text),
+        double.parse(_priceTextController.text.replaceFirst(RegExp(r','), '.')),
       ).then((bool success) {
         success
             ? Navigator.pushReplacementNamed(context, '/products')
