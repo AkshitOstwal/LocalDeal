@@ -65,7 +65,6 @@ class _MyAppState extends State<MyApp> {
       model: _model,
       child: MaterialApp(
         title: 'LocalDeal',
-        debugShowCheckedModeBanner: false,
         // debugShowMaterialGrid: true,
         theme: getAdaptiveThemeData(context),
         // home: AuthPage(),
