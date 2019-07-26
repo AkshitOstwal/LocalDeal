@@ -35,22 +35,22 @@ class _MyAppState extends State<MyApp> {
 
   Future<Null> _getBatteryLevel() async {
     String batteryLevel;
-    try{final int result = await _platformChannel.invokeMethod('getBatteryLevel');
-    batteryLevel = 'Battery level is $result';}
-    catch(error){
+    try {
+      final int result = await _platformChannel.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level is $result %.';
+    } catch (error) {
       batteryLevel = 'Failed to get battery level.';
       print(error);
     }
     print(batteryLevel);
-
   }
 
   @override
   void initState() {
     _model.autoAuthenticate();
-    _model.userSubject.listen((bool isAuthenticated){
+    _model.userSubject.listen((bool isAuthenticated) {
       setState(() {
-       _isAuthenticated = isAuthenticated;
+        _isAuthenticated = isAuthenticated;
       });
     });
     _getBatteryLevel();
@@ -68,7 +68,8 @@ class _MyAppState extends State<MyApp> {
         theme: getAdaptiveThemeData(context),
         // home: AuthPage(),
         routes: {
-          '/': (BuildContext context) => !_isAuthenticated ? AuthPage() : ProductsPage(_model),
+          '/': (BuildContext context) =>
+              !_isAuthenticated ? AuthPage() : ProductsPage(_model),
           // ScopedModelDescendant(
           //       builder: (BuildContext context, Widget child, MainModel model) {
           //         return _model.user == null
@@ -76,10 +77,12 @@ class _MyAppState extends State<MyApp> {
           //             : ProductsPage(_model);
           //       },
           //     ),
-          '/admin': (BuildContext context) => !_isAuthenticated ? AuthPage() : ProductAdminPage(_model),
+          '/admin': (BuildContext context) =>
+              !_isAuthenticated ? AuthPage() : ProductAdminPage(_model),
         },
         onGenerateRoute: (RouteSettings settings) {
-          if(!_isAuthenticated){return MaterialPageRoute<bool>(
+          if (!_isAuthenticated) {
+            return MaterialPageRoute<bool>(
               builder: (BuildContext context) => AuthPage(),
             );
           }
@@ -95,14 +98,16 @@ class _MyAppState extends State<MyApp> {
               return product.id == productId;
             });
             return CustomRoute<bool>(
-              builder: (BuildContext context) =>  !_isAuthenticated ? AuthPage() : ProductPage(product),
+              builder: (BuildContext context) =>
+                  !_isAuthenticated ? AuthPage() : ProductPage(product),
             );
           }
           return null;
         },
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(
-              builder: (BuildContext context) => !_isAuthenticated ? AuthPage() :ProductsPage(_model));
+              builder: (BuildContext context) =>
+                  !_isAuthenticated ? AuthPage() : ProductsPage(_model));
         },
       ),
     );
