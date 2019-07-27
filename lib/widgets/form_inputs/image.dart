@@ -42,7 +42,7 @@ class _ImageInputState extends State<ImageInput> {
             height: 150,
             child: Column(children: <Widget>[
               Text(
-                'Pick an Image',
+                'एक तस्वीर उठाओ',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -52,14 +52,14 @@ class _ImageInputState extends State<ImageInput> {
               ),
               FlatButton(
                 textColor: Theme.of(context).primaryColor,
-                child: Text('Use Camera'),
+                child: Text('कैमरा का उपयोग करें'),
                 onPressed: () {
                   _getImage(context, ImageSource.camera);
                 },
               ),
               FlatButton(
                 textColor: Theme.of(context).primaryColor,
-                child: Text('Use Gallery'),
+                child: Text('गैलरी का उपयोग करें'),
                 onPressed: () {
                   _getImage(context, ImageSource.gallery);
                 },
@@ -72,7 +72,7 @@ class _ImageInputState extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     final buttonColor = Theme.of(context).primaryColor;
-    Widget previewImage = Text('Please select an image.');
+    Widget previewImage = Text('कृपया एक फ़ोटो चुनें');
     if (_imageFile != null) {
       previewImage = Image.file(
         _imageFile,
@@ -109,7 +109,7 @@ class _ImageInputState extends State<ImageInput> {
                 width: 5.0,
               ),
               Text(
-                'Add Image',
+                ' फ़ोटो जोड़ो',
                 style: TextStyle(color: buttonColor),
               )
             ],

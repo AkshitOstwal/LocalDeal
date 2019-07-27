@@ -15,13 +15,13 @@ class ProductAdminPage extends StatelessWidget {
         children: <Widget>[
           AppBar(
             automaticallyImplyLeading: false,
-            title: Text("Choose"),
+            title: Text("चुनें"),
             elevation:
                 Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
           ),
           ListTile(
             leading: Icon(Icons.shop),
-            title: Text("All Products"),
+            title: Text("सभी उत्पाद"),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/');
             },
@@ -47,18 +47,18 @@ class ProductAdminPage extends StatelessWidget {
         child: Scaffold(
           drawer: _buildSideDrawer(context),
           appBar: AppBar(
-            title: Text("Manage Products"),
+            title: Text("उत्पाद का प्रबंधन करें"),
             elevation:
                 Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
             bottom: TabBar(
               tabs: <Widget>[
                 Tab(
                   icon: Icon(Icons.create),
-                  text: "Create Product",
+                  text: "उत्पाद बनाएँ",
                 ),
                 Tab(
                   icon: Icon(Icons.list),
-                  text: "My Product",
+                  text: "मेरा उत्पाद",
                 ),
               ],
             ),

@@ -43,7 +43,7 @@ class ProductPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          'Jaiput,Rajasthan',
+          'जयपुर, राजस्थान',
           style: TextStyle(fontFamily: 'Oswald', color: Colors.grey),
         ),
         Container(
