@@ -26,7 +26,7 @@
 .pub-cache/
 .pub/
 /build/
-key.properties
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -35,7 +35,6 @@ key.properties
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
-**/android/key.properties
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
