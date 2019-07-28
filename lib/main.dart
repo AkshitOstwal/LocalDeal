@@ -17,6 +17,7 @@ import 'package:scoped_model/scoped_model.dart';
 void main() {
   // debugPaintSizeEnabled = true;
   // debugPaintBaselinesEnabled = true;
+  
   // debugPaintPointersEnabled = true;
   runApp(MyApp());
 }
@@ -29,6 +30,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  
   final MainModel _model = MainModel();
   bool _isAuthenticated = false;
   final _platformChannel = MethodChannel('flutter-course.com/battery');
@@ -65,6 +67,7 @@ class _MyAppState extends State<MyApp> {
       model: _model,
       child: MaterialApp(
         title: 'LocalDeal',
+        debugShowCheckedModeBanner: false,
         // debugShowMaterialGrid: true,
         theme: getAdaptiveThemeData(context),
         // home: AuthPage(),
