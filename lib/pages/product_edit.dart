@@ -41,14 +41,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'शीर्षक',
-        hintText: 'शीर्षक',
+        labelText: 'Title',
+        hintText: 'Enter Tilte of Product',
       ),
       controller: _titleTextController,
       // initialValue: product == null ? null : product.title,
       validator: (String value) {
         if (value.isEmpty || value.length < 5) {
-          return "शीर्षक आवश्यक है";
+          return "Title is required and should be 5+ character";
         }
         return null;
       },
@@ -75,8 +75,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'विवरण',
-        hintText: 'विवरण',
+        labelText: 'Description',
+        hintText: 'Enter Description of product',
       ),
       controller: _descriptionTextController,
       onSaved: (String value) {
@@ -85,7 +85,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       // initialValue: product == null ? null : product.description,
       validator: (String value) {
         if (value.isEmpty || value.length < 10) {
-          return "विवरण आवश्यक है";
+          return "Description is required and should be 10+ character";
         }
         return null;
       },
@@ -108,8 +108,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'मूल्य',
-        hintText: 'मूल्य',
+        labelText: 'Price',
+        hintText: 'Enter Price',
       ),
       controller: _priceTextController,
 
@@ -117,7 +117,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r'^(?:[1-9]\d*|0)?(?:[.,]\d+)?$').hasMatch(value)) {
-          return "मूल्य  आवश्यक है";
+          return "Price is required and should be a number";
         }
         return null;
       },
@@ -132,7 +132,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             ? Center(
                 child: AdaptiveProgressIndicator())
             : RaisedButton(
-                child: Text('सुरक्षित करें'),
+                child: Text('Save'),
                 color: Theme.of(context).accentColor,
                 textColor: Colors.white,
                 onPressed: () => _submitForm(
@@ -209,11 +209,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('कुछ गड़बड़ है!'),
-                    content: Text('बाद में पुन: प्रयास करें'),
+                    title: Text('Something went wrong!!'),
+                    content: Text('Try again later!'),
                     actions: <Widget>[
                       FlatButton(
-                        child: Text("ठीक"),
+                        child: Text("Okay"),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     ],
@@ -235,11 +235,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('कुछ गड़बड़ है!!!'),
-                    content: Text('बाद में पुन: प्रयास करें'),
+                    title: Text('Something went wrong!!'),
+                    content: Text('Try again laterrr!'),
                     actions: <Widget>[
                       FlatButton(
-                        child: Text("ठीक"),
+                        child: Text("Okay"),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     ],
@@ -260,7 +260,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             ? pageContent
             : Scaffold(
                 appBar: AppBar(
-                  title: Text('उत्पाद संपादित करें'),
+                  title: Text('Edit Product'),
                   elevation:
                 Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
                 ),

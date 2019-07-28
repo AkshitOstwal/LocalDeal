@@ -44,14 +44,16 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   Widget _buildEmailTextField() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'ईमेल',
+        labelText: 'E-Mail',
         filled: true,
         fillColor: Colors.white.withOpacity(0.7),
       ),
       keyboardType: TextInputType.emailAddress,
       validator: (String value) {
-        if (value.isEmpty ) {
-          return 'अवैध ईमेल';
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'Please enter a valid email';
         }
         return null;
       },
@@ -64,7 +66,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   Widget _buildPasswordTextField() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'पासवर्ड',
+        labelText: 'Password',
         filled: true,
         fillColor: Colors.white.withOpacity(0.7),
       ),
@@ -72,7 +74,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       controller: _passwordTextController,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
-          return 'अवैध पासवर्ड';
+          return 'Password invalid';
         }
         return null;
       },
@@ -89,7 +91,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
             position: _slideAnimation,
             child: TextFormField(
               decoration: InputDecoration(
-                labelText: 'पासवर्ड की पुष्टि कीजिये',
+                labelText: 'Confirm Password',
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.7),
               ),
@@ -97,7 +99,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
               validator: (String value) {
                 if (value != _passwordTextController.text &&
                     _authMode == AuthMode.Signup) {
-                  return 'पासवर्ड नही मिल रहा';
+                  return 'Password Do not match';
                 }
                 return null;
               },
@@ -112,7 +114,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
           _formData['acceptTerms'] = value;
         });
       },
-      title: Text('नियम और शर्तों को स्वीकार करें'),
+      title: Text('Accept Terms and Condition'),
     );
   }
 
@@ -131,11 +133,11 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('- त्रुटि हुई'),
+              title: Text('An error occured'),
               content: Text(successInformation['message']),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('ठीक'),
+                  child: Text('Okay'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -156,7 +158,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: Text('लॉग इन करें'),
+            title: Text('Login'),
           ),
           body: Container(
             decoration: BoxDecoration(
@@ -186,7 +188,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           ),
                           FlatButton(
                             child: Text(
-                                'स्विच करें ${_authMode == AuthMode.Login ? 'Sign Up' : 'Login'}'),
+                                'Switch ${_authMode == AuthMode.Login ? 'Sign Up' : 'Login'}'),
                             onPressed: () {
                               if (_authMode == AuthMode.Login) {
                                 setState(() {

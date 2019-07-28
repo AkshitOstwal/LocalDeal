@@ -27,13 +27,13 @@ class _ProductsPageState extends State<ProductsPage> {
         children: <Widget>[
           AppBar(
             automaticallyImplyLeading: false,
-            title: Text("चुनें"),
+            title: Text("Choose"),
             elevation:
                 Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
           ),
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text("उत्पाद का प्रबंधन करें"),
+            title: Text("Manage Products"),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/admin');
             },
@@ -68,7 +68,7 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       drawer: _buildSideDrawer(context),
       appBar: AppBar(
-        title: Text('बाजार'),
+        title: Text('LocalDeal'),
         elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
         actions: <Widget>[
           ScopedModelDescendant<MainModel>(
