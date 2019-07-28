@@ -75,7 +75,7 @@ class ProductCard extends StatelessWidget {
           Hero(tag: product.id,
             child: FadeInImage(
             image: NetworkImage(product.image),
-            placeholder: AssetImage('assets/food.jpg'),
+            placeholder: AssetImage('assets/loading.jpg'),
             height: 300,
             fit: BoxFit.cover,
           ),),

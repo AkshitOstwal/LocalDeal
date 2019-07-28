@@ -19,18 +19,19 @@ class ImageInput extends StatefulWidget {
 class _ImageInputState extends State<ImageInput> {
   File _imageFile;
 
-  void _getImage(BuildContext context, ImageSource source) {
+  Future _getImage(BuildContext context, ImageSource source) async {
     print('getting image');
-    ImagePicker.pickImage(source: source, maxWidth: 400).then((File image) {
-      print('in then block entering setState');
-      setState(() {
-        print('file = image');
-        _imageFile = image;
-      });
-      print('setting image');
-      widget.setImage(image);
-      Navigator.pop(context);
+    File image = await ImagePicker.pickImage(source: source, maxWidth: 500);
+    if(image == null){
+      return null;
+    }
+    setState(() {
+      print('file = image');
+      _imageFile = image;
     });
+    print('setting image');
+    widget.setImage(image);
+    Navigator.pop(context);
   }
 
   void _openImagePicker(BuildContext context) {
