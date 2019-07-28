@@ -50,7 +50,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
       ),
       keyboardType: TextInputType.emailAddress,
       validator: (String value) {
-        if (value.isEmpty ) {
+        if (value.isEmpty  ) {
           return 'अवैध ईमेल';
         }
         return null;
@@ -186,7 +186,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                           ),
                           FlatButton(
                             child: Text(
-                                'स्विच करें ${_authMode == AuthMode.Login ? 'Sign Up' : 'Login'}'),
+                                'स्विच करें ${_authMode == AuthMode.Login ? 'साइन अप ' : 'लॉग इन '}'),
                             onPressed: () {
                               if (_authMode == AuthMode.Login) {
                                 setState(() {
@@ -215,7 +215,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
                                   : RaisedButton(
                                       textColor: Colors.white,
                                       child: Text(
-                                          '${_authMode == AuthMode.Login ? 'Login' : 'Sign Up'}'),
+                                          '${_authMode == AuthMode.Login ? 'लॉग इन' : 'साइन अप '}'),
                                       onPressed: () =>
                                           _submitForm(model.authenticate),
                                     );
